@@ -3,6 +3,7 @@
 #include "foo.h"
 #include <iostream>
 #include <string>
+#include <iomanip>
 using namespace std;
 
 degree_measure::degree_measure()
@@ -57,8 +58,8 @@ void degree_measure::add_angle()
 
 void degree_measure::show_angle()
 {
-	char ch = 176;
-	cout << degrees << ch <<" " << minutes << "' " << seconds << "\"";
+	char ch = 176, ch2 = 177;
+	cout << degrees << ch << " " << minutes << "' " << setprecision(3) << seconds << "\" " << "+- 1'";
 }
 
 degree_measure degree_measure::operator+(degree_measure angle2)
@@ -97,19 +98,27 @@ degree_measure degree_measure::operator-(degree_measure angle2)
 	return angle;
 }
 
-degree_measure degree_measure::operator/(degree_measure angle2)
+degree_measure& degree_measure::operator=(double angle2)
 {
-	return degree_measure();
-}
-
-degree_measure degree_measure::operator*(degree_measure angle2)
-{
-	return degree_measure();
+	degree_measure angle;
+	long double cel = 0, drob = 0;
+	drob = modf(angle2, &cel);
+	degrees = cel;
+	seconds = drob * 60 * 60;
+	while (seconds >= 60) {
+		minutes++;
+		seconds -= 60;
+	}
+	while (minutes >= 60) {
+		degrees++;
+		minutes -= 60;
+	}
+	return *this;
 }
 
 degree_measure::operator double()
 {
-	double angle_;
+	long double angle_ = 0;
 	angle_ = degrees;
 	angle_ += (minutes * 60 + seconds) / (60*60);
 	return angle_;
