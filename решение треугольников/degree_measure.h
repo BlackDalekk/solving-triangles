@@ -3,7 +3,7 @@ class degree_measure
 {
 	int degrees;
 	int minutes;
-	long double seconds;
+	double seconds;
 public:
 	degree_measure();
 	void add_angle();

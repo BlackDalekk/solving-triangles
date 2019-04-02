@@ -16,6 +16,7 @@ degree_measure::degree_measure()
 void degree_measure::add_angle()
 {
 	string str;
+	cin.ignore(1, '\n');
 	while (true) {
 		cout << "Введите градусы: ";
 		cin.unsetf(ios::skipws);
@@ -28,12 +29,11 @@ void degree_measure::add_angle()
 		cin.ignore(10, '\n');
 		cout << "Ошибка ввода!\n";
 	}
-	cin.clear();
 	while (true) {
-		cout << "Введите секунды: ";
+		cout << "Введите минуты: ";
 		cin.unsetf(ios::skipws);
 		cin >> str;
-		if (is_angle(str)) {
+		if (is_angle_(str)) {
 			cin.ignore(10, '\n');
 			minutes = atoi(str.c_str());
 			break;
@@ -41,12 +41,11 @@ void degree_measure::add_angle()
 		cin.ignore(10, '\n');
 		cout << "Ошибка ввода!\n";
 	}
-	cin.clear();
 	while (true) {
-		cout << "Введите минуты: ";
+		cout << "Введите секунды: ";
 		cin.unsetf(ios::skipws);
 		cin >> str;
-		if (is_angle(str)) {
+		if (is_angle_(str)) {
 			cin.ignore(10, '\n');
 			seconds = atoi(str.c_str());
 			break;
@@ -59,7 +58,7 @@ void degree_measure::add_angle()
 void degree_measure::show_angle()
 {
 	char ch = 176, ch2 = 177;
-	cout << degrees << ch << " " << minutes << "' " << setprecision(3) << seconds << "\" " << "+- 1'";
+	cout << degrees << ch << " " << minutes << "' " << setprecision(3) << seconds << "\" " <<endl;
 }
 
 degree_measure degree_measure::operator+(degree_measure angle2)
@@ -100,7 +99,6 @@ degree_measure degree_measure::operator-(degree_measure angle2)
 
 degree_measure& degree_measure::operator=(double angle2)
 {
-	degree_measure angle;
 	long double cel = 0, drob = 0;
 	drob = modf(angle2, &cel);
 	degrees = cel;
@@ -120,7 +118,7 @@ degree_measure::operator double()
 {
 	long double angle_ = 0;
 	angle_ = degrees;
-	angle_ += (minutes * 60 + seconds) / (60*60);
+	angle_ += ((minutes + seconds * 0.01) / 60)*0.01;
 	return angle_;
 }
 
